@@ -32,7 +32,6 @@ void ATetrisBoard::Tick(float DeltaTime)
 		SpawnBlock();
 		break;
 	case ETetrisBoardState::Falling:
-		MoveLeft();
 		break;
 	case ETetrisBoardState::Paused:
 		break;
@@ -104,12 +103,22 @@ void ATetrisBoard::SpawnBlock()
 
 void ATetrisBoard::MoveLeft()
 {
+	for (int i = 0; i < CurTetromino.Num(); i++)
+	{
+		if (X + CurBlockData.RelativeOffset[i].X - 1< 1)
+			return;
+	}
 	X--;
 	UpdateLocation();
 }
 
 void ATetrisBoard::MoveRight()
 {
+	for (int i = 0; i < CurTetromino.Num(); i++)
+	{
+		if (X + CurBlockData.RelativeOffset[i].X + 1 >= Width-1)
+			return;
+	}
 	X++;
 	UpdateLocation();
 }
@@ -117,8 +126,40 @@ void ATetrisBoard::MoveRight()
 
 void ATetrisBoard::MoveDown()
 {
-	Y--;
-	UpdateLocation();
+	if (CanMoveDown())
+	{
+		Y--;
+		UpdateLocation();
+	}
+	else
+	{
+		for (int i = 0; i < CurTetromino.Num(); i++)
+		{
+			int BlockX = X + CurBlockData.RelativeOffset[i].X;
+			int BlockY = Y + CurBlockData.RelativeOffset[i].Y;
+			Board[BlockX][BlockY] = CurTetromino[i];
+		}
+		State = ETetrisBoardState::Spawning;
+	}
+
+}
+
+bool ATetrisBoard::CanMoveDown()
+{
+	for (int i = 0; i < CurTetromino.Num(); i++)
+	{
+		int BlockX = X + CurBlockData.RelativeOffset[i].X;
+		int BlockY = Y + CurBlockData.RelativeOffset[i].Y;
+		if (BlockY - 1 == 0 || Board[BlockX][BlockY - 1] != nullptr)
+		{
+			return false;
+		}
+	}
+	return true;
+}
+
+void ATetrisBoard::Rotate()
+{
 }
 
 void ATetrisBoard::UpdateLocation()

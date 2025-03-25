@@ -46,6 +46,7 @@ public:
 	void MoveRight();
 	void UpdateLocation();
 	void MoveDown();
+	bool CanMoveDown();
 	void Rotate();
 
 	UPROPERTY()

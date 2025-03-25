@@ -25,6 +25,11 @@ public:
     void MoveDown();
     void Rotate();
 
+    void SetBoard(ATetrisBoard* _Board)
+    {
+        Board = _Board;
+    }
+
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input", meta = (AllowPrivateAccess = "true"))
     class UInputAction* MoveLeftAction;
 

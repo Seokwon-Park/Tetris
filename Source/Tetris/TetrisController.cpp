@@ -25,7 +25,7 @@ void ATetrisController::SetupInputComponent()
 
     if (EnhancedInputComponent)
     {
-        EnhancedInputComponent->BindAction(MoveLeftAction, ETriggerEvent::Triggered, this, &ATetrisController::MoveLeft);
+        EnhancedInputComponent->BindAction(MoveLeftAction, ETriggerEvent::Started, this, &ATetrisController::MoveLeft);
         EnhancedInputComponent->BindAction(MoveRightAction, ETriggerEvent::Triggered, this, &ATetrisController::MoveRight);
         EnhancedInputComponent->BindAction(MoveDownAction, ETriggerEvent::Triggered, this, &ATetrisController::MoveDown);
         EnhancedInputComponent->BindAction(RotateAction, ETriggerEvent::Triggered, this, &ATetrisController::Rotate);
@@ -34,14 +34,26 @@ void ATetrisController::SetupInputComponent()
 
 void ATetrisController::MoveLeft()
 {
+    if (Board != nullptr)
+    {
+        Board->MoveLeft();
+    }
 }
 
 void ATetrisController::MoveRight()
 {
+    if (Board != nullptr)
+    {
+        Board->MoveRight();
+    }
 }
 
 void ATetrisController::MoveDown()
 {
+    if (Board != nullptr)
+    {
+        Board->MoveDown();
+    }
 }
 
 void ATetrisController::Rotate()
