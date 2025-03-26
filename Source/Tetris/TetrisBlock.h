@@ -25,6 +25,8 @@ public:
 
 	FVector GetMeshSize() const;
 
+	void SetColor(FLinearColor _Color);
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	UStaticMeshComponent* BlockMesh;
 };

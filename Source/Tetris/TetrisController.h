@@ -24,7 +24,10 @@ public:
     void MoveRight();
     void MoveDown();
     void Rotate();
+    void Zoom(const FInputActionValue& Value);
+    void ForceDown();
 
+    
     void SetBoard(ATetrisBoard* _Board)
     {
         Board = _Board;
@@ -41,6 +44,12 @@ public:
 
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input", meta = (AllowPrivateAccess = "true"))
     class UInputAction* RotateAction;
+
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input", meta = (AllowPrivateAccess = "true"))
+    class UInputAction* ZoomAction;
+
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input", meta = (AllowPrivateAccess = "true"))
+    class UInputAction* ForceDownAction;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input", meta = (AllowPrivateAccess = "true"))
     UInputMappingContext* MappingContext = nullptr;

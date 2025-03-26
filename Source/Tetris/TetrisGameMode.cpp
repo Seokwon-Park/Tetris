@@ -3,13 +3,24 @@
 
 #include "TetrisGameMode.h"
 #include "TetrisController.h"
+#include "TetrisGameInstance.h"
 
 void ATetrisGameMode::BeginPlay()
 {
 	Super::BeginPlay();
+
+	UTetrisGameInstance* Inst = Cast<UTetrisGameInstance>(GetGameInstance());
+
 	
 	Board = GetWorld()->SpawnActor<ATetrisBoard>(BoardBP);
-	Board->SetBoardSize(12, 21);
+	if (Inst)
+	{
+		Board->SetBoardSize(Inst->BoardWidth, Inst->BoardHeight);
+	}
+	else
+	{
+		Board->SetBoardSize(10, 20);
+	}
 	Board->GameStart();
 
 	ATetrisController* Controller = Cast<ATetrisController>(GetWorld()->GetFirstPlayerController());

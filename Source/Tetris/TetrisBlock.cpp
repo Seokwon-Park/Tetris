@@ -18,7 +18,20 @@ ATetrisBlock::ATetrisBlock()
 void ATetrisBlock::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+
+    for (int i = 0; i < BlockMesh->GetNumMaterials(); i++)
+    {
+        UMaterialInterface* Material = BlockMesh->GetMaterial(i);
+        if (!Material) return;
+
+        UMaterialInstanceDynamic* DynamicMaterial = UMaterialInstanceDynamic::Create(Material, this);
+
+        BlockMesh->SetMaterial(0, DynamicMaterial);
+
+        DynamicMaterial->SetVectorParameterValue(FName("Color"), FLinearColor::Gray);
+    }
+
 }
 
 // Called every frame
@@ -32,4 +45,18 @@ FVector ATetrisBlock::GetMeshSize() const
 {
 	return BlockMesh->GetStaticMesh()->GetBounds().GetBox().GetSize();
 }
+
+void ATetrisBlock::SetColor(FLinearColor _Color)
+{
+    for (int i = 0; i < BlockMesh->GetNumMaterials(); i++)
+    {
+		UMaterialInstanceDynamic* DynamicMaterial = Cast<UMaterialInstanceDynamic>(BlockMesh->GetMaterial(i));
+		if (nullptr != DynamicMaterial)
+		{
+			DynamicMaterial->SetVectorParameterValue(FName("Color"), _Color);
+		}
+    }
+}
+
+
 

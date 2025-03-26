@@ -14,9 +14,9 @@ enum class ETetrisBoardState : uint8
 	Waiting UMETA(DisplayName = "Waiting"),       // 대기 중
 	Spawning UMETA(DisplayName = "Spawning"),     // 블록 생성 중
 	Falling UMETA(DisplayName = "Falling"),       // 블록이 떨어지고 있음
+	Updating UMETA(DisplayName = "Checking"),	  // 보드 상태 체크
 	Paused UMETA(DisplayName = "Paused"),         // 일시 정지
 	GameOver UMETA(DisplayName = "Game Over"),    // 게임 오버
-	Building UMETA(DisplayName = "Building")      // 블록 쌓는 중
 };
 
 UCLASS()
@@ -45,9 +45,12 @@ public:
 	void MoveLeft();
 	void MoveRight();
 	void UpdateLocation();
+	void UpdateGhost();
 	void MoveDown();
-	bool CanMoveDown();
+	bool CanMoveDown(int CurY);
 	void Rotate();
+	void ForceDown();
+	void UpdateBoard();
 
 	UPROPERTY()
 	int Width;
@@ -57,14 +60,28 @@ public:
 
 	int X;
 	int Y;
+	int GhostY = 0;
+	int Rotated = 0;
 
-	FVector MeshSize ;
+	float DownTimer = 0.0f;
+	float DownDelay = 0.1f;
+
+	float MoveTimer = 0.0f;
+	float MoveDelay = 0.1f;
+
+	//행에 몇개나 차있는지
+	TArray<int32> RowCount;
+	TArray<int32> RowToDestroy;
+
+	FVector MeshSize;
 
 	ETetrisBoardState State = ETetrisBoardState::Waiting;
 
 	TArray<TArray<ATetrisBlock*>> Board;
+	TArray<TArray<int32>> DownArray;
 
 	TArray<ATetrisBlock*> CurTetromino;
+	TArray<ATetrisBlock*> GhostBlock;
 
 	FVector Offset;
 
